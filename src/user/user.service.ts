@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from 'src/task/entities/task.entity';
-
+import * as  bcrypt from "bcrypt";
 @Injectable()
 export class UserService {
   private logger =  new Logger(UserService.name)
@@ -14,15 +14,15 @@ export class UserService {
   }
   async create(createUserDto: CreateUserDto) {
     try {
-      let {tasks=[] , ...userDeteails}=createUserDto ;
 
        let user = await this.userRepository.create({
-        ...userDeteails,
-        tasks: tasks.map(tarea=> this.taskRepository.create({...tarea}))
-       })
+        ...createUserDto,
+        password: await bcrypt.hash(createUserDto.password,10)
+             })
        await this.userRepository.save(user);
-        
-       return  {...user,tasks};
+      const { password, createAt, updateAt,isActive, id,...safeUser } = user;
+
+       return  safeUser;
     } catch (error) {
       this.errorHandler(error)
     }
@@ -50,12 +50,12 @@ findOne(term: string):User {
     return `This action removes a #${id} user`;
   }
   private errorHandler(error:any){
-    this.logger.error(error.detail)
+    this.logger.error(error)
     switch (error.code) {
       case '23505':
         throw new BadRequestException(error.detail);
       default:
-        throw new InternalServerErrorException("Error no manejado revisar logs ");
+        throw new InternalServerErrorException("Error no manejado revisar logs");
     }
   }
 }

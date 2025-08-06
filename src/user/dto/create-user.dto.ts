@@ -19,12 +19,12 @@ export class CreateUserDto {
     @MinLength(4)
     password: string;
 
-    @ApiProperty({ required:false, type: [Task] ,description:'Array de tareas', example:[ {
-        "title": "limpiar piso",
-        "description": "limpiar asala comdor",
-        "priority":2
-    }], default:[]})
-    @IsOptional()
-    @IsArray()
-    tasks?: Task[];
+    // @ApiProperty({ required:false, type: [Task] ,description:'Array de tareas', example:[ {
+    //     "title": "limpiar piso",
+    //     "description": "limpiar asala comdor",
+    //     "priority":2
+    // }], default:[]})
+    // @IsOptional()
+    // @IsArray()
+    // tasks?: Task[];
 }
