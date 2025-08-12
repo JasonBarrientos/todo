@@ -11,7 +11,7 @@ export const TodoApp = () => {
     return (
         <div className="todo-app">
             <header className="todo-header">
-                <h1>Tareas</h1>
+                <h1>Tareas {(tasks.length>0)? <span>({tasks.length}) </span>: ''}</h1>
                 <p className="subtitle">Agregá nueva tarea</p>
             </header>
 
