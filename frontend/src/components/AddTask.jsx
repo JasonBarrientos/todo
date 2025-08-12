@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import{ useState } from 'react'
+import { v4 as uuidv4 } from 'uuid';
 
-export const AddTarea = ({setTasks}) => {
+export const AddTask = ({setTasks}) => {
 
     const [inputValue, setInputValue] = useState('')
 
@@ -9,7 +10,11 @@ const onInputChanged=({target})=>{
 }
 const onSubmitValue=(event)=>{
     event.preventDefault();
-    setTasks(tasks=>[...tasks,inputValue]);
+    setTasks(tasks=>[...tasks,{
+        id: uuidv4(),
+        value:inputValue,
+        completed:false
+    }]);
     setInputValue('')
 }
 

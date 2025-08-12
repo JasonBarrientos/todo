@@ -1,10 +1,9 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {Todo} from './Todo.jsx'
+import {TodoApp} from './TodoApp.jsx'
 import './styles.css'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Todo />
-    
+    <TodoApp />
   </StrictMode>,
 )
