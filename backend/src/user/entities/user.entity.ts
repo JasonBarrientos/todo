@@ -2,31 +2,34 @@ import { Task } from "src/task/entities/task.entity";
 import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
 
     @PrimaryGeneratedColumn('uuid')
-    id:string;
+    id: string;
 
-    @Column({type:'text',nullable:true})
-    name:string;
+    @Column({ type: 'text', nullable: true })
+    name: string;
 
     @Index()
-    @Column({type:'text', unique:true})
-    email:string;
+    @Column({ type: 'text', unique: true })
+    email: string;
 
-    @Column({type:'text'})
-    password:string;
+    @Column({ type: 'text' })
+    password: string;
 
-    @Column({type:'bool',default:true})
-    isActive:boolean;
+    @Column({ type: 'bool', default: true })
+    isActive: boolean;
 
     @CreateDateColumn()
-    createAt:Date;
+    createAt: Date;
 
     @UpdateDateColumn()
-    updateAt:Date;
+    updateAt: Date;
 
-    @OneToMany(()=> Task, task=> task.user,{cascade:true,eager:true})
+    @Column({ array: true, type: 'text', default: ['user'] })
+    roles: string[]
+
+    @OneToMany(() => Task, task => task.user, { cascade: true, eager: true })
     tasks?: Task[]
 }

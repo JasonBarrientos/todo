@@ -3,7 +3,7 @@ import { User } from "src/user/entities/user.entity";
 import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
-@Entity()
+@Entity({name:'tasks'})
 export class Task {
 
         @ApiProperty()
