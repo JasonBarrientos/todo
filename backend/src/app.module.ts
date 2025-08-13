@@ -3,6 +3,7 @@ import { TaskModule } from './task/task.module';
 import { UserModule } from "./user/user.module";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { SeedModule } from './seed/seed.module';
 
 
 @Module({
@@ -15,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       database: process.env.POSTGRES_DB,
       synchronize: true,
       autoLoadEntities:true
-  }),UserModule, TaskModule],
+  }),UserModule, TaskModule, SeedModule],
   controllers: [],
   providers: [],
 })

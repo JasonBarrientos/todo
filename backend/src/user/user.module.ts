@@ -9,5 +9,6 @@ import { TaskModule } from 'src/task/task.module';
   imports: [ TypeOrmModule.forFeature([User]), TaskModule],
   controllers: [UserController],
   providers: [UserService],
+  exports:[TypeOrmModule,UserService]
 })
 export class UserModule {}
