@@ -42,6 +42,6 @@ export class Task {
         updatedAt: Date;
 
         @ApiProperty()
-        @ManyToOne(() => User, user => user.tasks)
+        @ManyToOne(() => User, user => user.tasks,{onDelete: 'CASCADE'})
         user: User
 }
