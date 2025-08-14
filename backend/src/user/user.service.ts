@@ -33,13 +33,7 @@ export class UserService {
   async findAll() {
     return await this.userRepository.find();
   }
-  /**
-   *Busquedade usuario por termino (id,email,nickname)
-   *
-   * @param {string} term -termino de busqueda
-   * @return {User} Retorna un usuario si lo encuentra
-   * @memberof UserService
-   */
+
   async findOne(term: string) {
     console.log('findOne');
 
@@ -69,8 +63,10 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  async remove(term: string) {
+    let user = await  this.findOne(term)
+     await this.userRepository.remove(user.id);
+    return `This action removes a #${term} user`;
   }
   private errorHandler(error: any) {
     this.logger.error(error)
