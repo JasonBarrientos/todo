@@ -6,23 +6,25 @@ import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from 'src/task/entities/task.entity';
 import * as  bcrypt from "bcrypt";
+import { validate } from "uuid";
+import { log } from 'console';
 @Injectable()
 export class UserService {
-  private logger =  new Logger(UserService.name)
-  constructor( @InjectRepository(User) private readonly userRepository:  Repository<User>,@InjectRepository(Task) private readonly taskRepository:  Repository<Task>){
+  private logger = new Logger(UserService.name)
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, @InjectRepository(Task) private readonly taskRepository: Repository<Task>) {
 
   }
   async create(createUserDto: CreateUserDto) {
     try {
 
-       let user = await this.userRepository.create({
+      let user = await this.userRepository.create({
         ...createUserDto,
-        password: await bcrypt.hash(createUserDto.password,10)
-             })
-       await this.userRepository.save(user);
-      const { password, createAt, updateAt,isActive,roles, id,...safeUser } = user;
+        password: await bcrypt.hash(createUserDto.password, 10)
+      })
+      await this.userRepository.save(user);
+      const { password, createAt, updateAt, isActive, roles, id, ...safeUser } = user;
 
-       return  safeUser;
+      return safeUser;
     } catch (error) {
       this.errorHandler(error)
     }
@@ -31,25 +33,46 @@ export class UserService {
   async findAll() {
     return await this.userRepository.find();
   }
-/**
- *Busquedade usuario por termino (id,email,nickname)
- *
- * @param {string} term -termino de busqueda
- * @return {User} Retorna un usuario si lo encuentra
- * @memberof UserService
- */
-findOne(term: string):User {
-    return new User();
+  /**
+   *Busquedade usuario por termino (id,email,nickname)
+   *
+   * @param {string} term -termino de busqueda
+   * @return {User} Retorna un usuario si lo encuentra
+   * @memberof UserService
+   */
+  async findOne(term: string) {
+    console.log('findOne');
+
+    try {
+      let user;
+      if (validate(term)) {
+        user = await this.userRepository.findOneBy({ id: term })
+      }
+      else if (!user && this.isEmail(term)) {
+        user = await this.userRepository.findOneBy({ email: term })
+      }
+      else {
+        user = await this.userRepository.findOneBy({ nickname: term })
+      }
+      return user;
+    } catch (error) {
+      this.errorHandler(error)
+    }
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(term: string, updateUserDto: UpdateUserDto) {
+
+    let user = await this.userRepository.preload({ id: term, ...updateUserDto })
+    if (!user) {
+      throw new BadRequestException(`User with id ${term} not found.`)
+    }
+    return await this.userRepository.save(user);
   }
 
   remove(id: string) {
     return `This action removes a #${id} user`;
   }
-  private errorHandler(error:any){
+  private errorHandler(error: any) {
     this.logger.error(error)
     switch (error.code) {
       case '23505':
@@ -57,5 +80,9 @@ findOne(term: string):User {
       default:
         throw new InternalServerErrorException("Error no manejado revisar logs");
     }
+  }
+  private isEmail(value: string): boolean {
+    // Puedes usar class-validator también, pero aquí un regex simple:
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 }

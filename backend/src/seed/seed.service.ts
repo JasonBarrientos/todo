@@ -32,7 +32,8 @@ export class SeedService {
       users.push({
         name: faker.internet.username({ firstName, lastName }),
         email: faker.internet.email({ firstName, lastName }),
-        password: faker.internet.password(),
+        password: faker.internet.password({length:8,}),
+        nickname: faker.internet.username({ firstName }) 
       })
     }
     return users;

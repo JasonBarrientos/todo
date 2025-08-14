@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsOptional, IsString, MinLength } from "class-validator";
+import { IsArray, IsOptional, IsString, IsStrongPassword, MinLength } from "class-validator";
 import { Task } from "src/task/entities/task.entity";
 
 
@@ -14,10 +14,15 @@ export class CreateUserDto {
     @MinLength(4)
     email: string;
 
-    @ApiProperty({type: 'string', minLength: 4,required:true, example:"mipassw_123!"})
+    @ApiProperty({type: 'string',minLength: 8,required:true, example:"Mipassw_123!"})
+    @IsStrongPassword({minLength:8})
+    @IsString()
+    password: string;
+
+    @ApiProperty({type: 'string', minLength: 4,required:true, example:"nicknamePro!"})
     @IsString()
     @MinLength(4)
-    password: string;
+    nickname: string;
 
     // @ApiProperty({ required:false, type: [Task] ,description:'Array de tareas', example:[ {
     //     "title": "limpiar piso",
