@@ -11,6 +11,9 @@ export class User {
     @Column({ type: 'text', nullable: true })
     name: string;
 
+    @Column({ type: 'text'})
+    nickname: string;
+
     @Index()
     @Column({ type: 'text', unique: true })
     email: string;
