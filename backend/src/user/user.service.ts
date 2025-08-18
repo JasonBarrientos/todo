@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from 'src/task/entities/task.entity';
 import * as  bcrypt from "bcrypt";
 import { validate } from "uuid";
-import { log } from 'console';
 @Injectable()
 export class UserService {
   private logger = new Logger(UserService.name)
@@ -16,14 +15,12 @@ export class UserService {
   }
   async create(createUserDto: CreateUserDto) {
     try {
-
       let user = await this.userRepository.create({
         ...createUserDto,
         password: await bcrypt.hash(createUserDto.password, 10)
       })
       await this.userRepository.save(user);
       const { password, createAt, updateAt, isActive, roles, id, ...safeUser } = user;
-
       return safeUser;
     } catch (error) {
       this.errorHandler(error)
@@ -35,8 +32,6 @@ export class UserService {
   }
 
   async findOne(term: string) {
-    console.log('findOne');
-
     try {
       let user;
       if (validate(term)) {
@@ -55,7 +50,6 @@ export class UserService {
   }
 
   async update(term: string, updateUserDto: UpdateUserDto) {
-
     let user = await this.userRepository.preload({ id: term, ...updateUserDto })
     if (!user) {
       throw new BadRequestException(`User with id ${term} not found.`)
@@ -68,6 +62,7 @@ export class UserService {
      await this.userRepository.remove(user.id);
     return `This action removes a #${term} user`;
   }
+
   private errorHandler(error: any) {
     this.logger.error(error)
     switch (error.code) {
@@ -77,8 +72,8 @@ export class UserService {
         throw new InternalServerErrorException("Error no manejado revisar logs");
     }
   }
+
   private isEmail(value: string): boolean {
-    // Puedes usar class-validator también, pero aquí un regex simple:
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 }
