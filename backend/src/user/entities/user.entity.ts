@@ -11,23 +11,23 @@ export class User {
     @Column({ type: 'text', nullable: true })
     name: string;
 
-    @Column({ type: 'text'})
+    @Column({ type: 'text', unique:true})
     nickname: string;
 
     @Index()
     @Column({ type: 'text', unique: true })
     email: string;
 
-    @Column({ type: 'text' })
+    @Column({ type: 'text' , select: false })
     password: string;
 
-    @Column({ type: 'bool', default: true })
+    @Column({ type: 'bool', default: true , select: false })
     isActive: boolean;
 
-    @CreateDateColumn()
+    @CreateDateColumn({type: 'date', select: false })
     createAt: Date;
 
-    @UpdateDateColumn()
+    @UpdateDateColumn({type: 'date' , select: false })
     updateAt: Date;
 
     @Column({ array: true, type: 'text', default: ['user'] })

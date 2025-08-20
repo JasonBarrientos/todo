@@ -23,13 +23,4 @@ export class CreateUserDto {
     @IsString()
     @MinLength(4)
     nickname: string;
-
-    // @ApiProperty({ required:false, type: [Task] ,description:'Array de tareas', example:[ {
-    //     "title": "limpiar piso",
-    //     "description": "limpiar asala comdor",
-    //     "priority":2
-    // }], default:[]})
-    // @IsOptional()
-    // @IsArray()
-    // tasks?: Task[];
 }

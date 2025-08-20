@@ -17,12 +17,13 @@ export class SeedService {
 
   }
   async executeSeed(quantityUsers?: number) {
-    await this.seedUsers(quantityUsers);
-    return `This action returns all seed`;
+   
+    return  await this.seedUsers(quantityUsers);
   }
   private async seedUsers(quantityUsers?: number) {
     const users: CreateUserDto[] = await this.generateUsers(quantityUsers || this.DEFAULT_USERS);
     await this.insertUsers(users);
+    return users;
   }
   private async generateUsers(quantityUsers: number): Promise<CreateUserDto[]> {
     let users: CreateUserDto[] = [];

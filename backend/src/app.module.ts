@@ -4,6 +4,7 @@ import { UserModule } from "./user/user.module";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SeedModule } from './seed/seed.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -16,7 +17,7 @@ import { SeedModule } from './seed/seed.module';
       database: process.env.POSTGRES_DB,
       synchronize: true,
       autoLoadEntities:true
-  }),UserModule, TaskModule, SeedModule],
+  }),UserModule, TaskModule, SeedModule, AuthModule],
   controllers: [],
   providers: [],
 })
