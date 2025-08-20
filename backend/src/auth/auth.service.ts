@@ -13,25 +13,15 @@ export class AuthService {
   async login(createAuthDto: LoginDto) {
     let {email,password}=createAuthDto;
     
-    // let user = await this.userRepository.createQueryBuilder('user')
-    // .where('user.email = :email',{email})
-    // .select(['user.password','user.isActive'])
-    // .getOne()
-    let user= await this.userRepository.findOne({
-      where:{
-        email
-      },
-      select: {
-          email:true, password: true, isActive: true, id: true
-      }
-    })
-
-
-    console.log(user);
-
+    let user = await this.userRepository.createQueryBuilder('user')
+    .where('user.email = :email',{email})
+    .select(['user.password','user.isActive'])
+    .getOne()
+ 
     if (!user) throw new UnauthorizedException(`Usuario no Autorizado`) ;
     if( !user.isActive) throw new UnauthorizedException(`Usuario no Activo`) ;
     if (!bcrypt.compareSync (password ,user.password)) throw new UnauthorizedException(`Usuario con contraseña invalida`) ;
+    //TODO: retornar jwt
     return user;
   }
 
