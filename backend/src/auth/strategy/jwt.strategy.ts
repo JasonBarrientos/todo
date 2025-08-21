@@ -21,7 +21,7 @@ export class JwtStrategy extends PassportStrategy (Strategy){
     let user = await this.userRepository
     .createQueryBuilder('user')
     .where('user.id= :id',{id})
-    .select(['user.isActive','user.password'])
+    .select(['user.isActive','user.password','user.roles'])
     .getOne()
     if (!user)throw new UnauthorizedException(`Usuario no autorizado`)
     if(!user.isActive)throw new UnauthorizedException(`Usuario no activo`)

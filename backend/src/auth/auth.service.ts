@@ -22,7 +22,7 @@ export class AuthService {
     
     let user = await this.userRepository.createQueryBuilder('user')
     .where('user.email = :email',{email})
-    .select(['user.password','user.isActive',' user.email','user.id'])
+    .select(['user.password','user.isActive',' user.email','user.id','user.roles'])
     .getOne()
  
     if (!user) throw new UnauthorizedException(`Usuario no Autorizado`) ;
