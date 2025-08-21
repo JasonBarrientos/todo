@@ -4,25 +4,50 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as  bcrypt from "bcrypt";
+import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
 
-  constructor(@InjectRepository(User) private readonly userRepository :  Repository<User>){}
+  constructor(@InjectRepository(User) private readonly userRepository :  Repository<User>, 
+  private readonly jwtService: JwtService,
+  private readonly userService: UserService
+){}
 
   async login(createAuthDto: LoginDto) {
     let {email,password}=createAuthDto;
     
     let user = await this.userRepository.createQueryBuilder('user')
     .where('user.email = :email',{email})
-    .select(['user.password','user.isActive'])
+    .select(['user.password','user.isActive',' user.email'])
     .getOne()
  
     if (!user) throw new UnauthorizedException(`Usuario no Autorizado`) ;
     if( !user.isActive) throw new UnauthorizedException(`Usuario no Activo`) ;
     if (!bcrypt.compareSync (password ,user.password)) throw new UnauthorizedException(`Usuario con contraseña invalida`) ;
-    //TODO: retornar jwt
-    return user;
+
+
+    return {...user,
+      token: this.getJwtToken({email})
+    };
+  }
+  async register(createUserDto: CreateUserDto){
+   try {
+     let user= await this.userService.create(createUserDto);
+    return {
+      ...user,
+      token: this.getJwtToken({email: user!.email})
+    }
+   } catch (error) {
+      throw new Error(error.detail);
+      
+   }
+  }
+  private getJwtToken(payload: JwtPayload){
+    return this.jwtService.sign(payload);
   }
 
 }

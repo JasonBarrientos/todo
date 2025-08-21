@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 
 
 @Module({
-  imports: [ ConfigModule.forRoot(),TypeOrmModule.forRoot({
+  imports: [ ConfigModule.forRoot({isGlobal:true}),TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
       port: 5432,

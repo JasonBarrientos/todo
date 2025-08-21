@@ -9,13 +9,6 @@ import { User } from './entities/user.entity';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @ApiCreatedResponse({type:User, description: 'The record has been successfully created.'})
-  @ApiBadRequestResponse({description:'Bad request'})
-  @ApiBody({type: CreateUserDto})
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
 
   @Get()
   findAll() {

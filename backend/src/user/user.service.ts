@@ -4,13 +4,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from 'src/task/entities/task.entity';
 import * as  bcrypt from "bcrypt";
 import { validate } from "uuid";
 @Injectable()
 export class UserService {
   private logger = new Logger(UserService.name)
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>, @InjectRepository(Task) private readonly taskRepository: Repository<Task>) {
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {
 
   }
   async create(createUserDto: CreateUserDto) {
@@ -21,7 +20,10 @@ export class UserService {
       })
       await this.userRepository.save(user);
       const { password, createAt, updateAt, isActive, roles, id, ...safeUser } = user;
-      return safeUser;
+      return {
+        ...safeUser,
+
+      };
     } catch (error) {
       this.errorHandler(error)
     }
@@ -76,4 +78,5 @@ export class UserService {
   private isEmail(value: string): boolean {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
+
 }
