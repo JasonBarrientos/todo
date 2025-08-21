@@ -17,10 +17,10 @@ export class JwtStrategy extends PassportStrategy (Strategy){
     }
     
    async  validate(payload: JwtPayload): Promise<User> {
-    const {email} = payload;
+    const {id} = payload;
     let user = await this.userRepository
     .createQueryBuilder('user')
-    .where('user.email= :email',{email})
+    .where('user.id= :id',{id})
     .select(['user.isActive','user.password'])
     .getOne()
     if (!user)throw new UnauthorizedException(`Usuario no autorizado`)

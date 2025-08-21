@@ -22,7 +22,7 @@ export class AuthService {
     
     let user = await this.userRepository.createQueryBuilder('user')
     .where('user.email = :email',{email})
-    .select(['user.password','user.isActive',' user.email'])
+    .select(['user.password','user.isActive',' user.email','user.id'])
     .getOne()
  
     if (!user) throw new UnauthorizedException(`Usuario no Autorizado`) ;
@@ -31,7 +31,7 @@ export class AuthService {
 
 
     return {...user,
-      token: this.getJwtToken({email})
+      token: this.getJwtToken({id:user.id})
     };
   }
   async register(createUserDto: CreateUserDto){
@@ -39,7 +39,7 @@ export class AuthService {
      let user= await this.userService.create(createUserDto);
     return {
       ...user,
-      token: this.getJwtToken({email: user!.email})
+      token: this.getJwtToken({id: user!.id})
     }
    } catch (error) {
       throw new Error(error.detail);

@@ -4,7 +4,8 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserService } from 'src/user/user.service';
+import { AuthService } from 'src/auth/auth.service';
+import { CreateUserResponseDto } from 'src/user/dto/create-user-response.dto copy';
 
 
 @Injectable()
@@ -12,7 +13,7 @@ export class SeedService {
     private readonly DEFAULT_USERS = 10;
 
   constructor(
-    private readonly userService: UserService, @InjectRepository(User) 
+    private readonly authService:AuthService, @InjectRepository(User) 
     private readonly userRepository: Repository<User>) {
 
   }
@@ -22,8 +23,7 @@ export class SeedService {
   }
   private async seedUsers(quantityUsers?: number) {
     const users: CreateUserDto[] = await this.generateUsers(quantityUsers || this.DEFAULT_USERS);
-    await this.insertUsers(users);
-    return users;
+    return  await this.insertUsers(users);;
   }
   private async generateUsers(quantityUsers: number): Promise<CreateUserDto[]> {
     let users: CreateUserDto[] = [];
@@ -40,9 +40,11 @@ export class SeedService {
     return users;
   }
   private async insertUsers(users: CreateUserDto[]) {
+    let usersInserts:CreateUserResponseDto[]=[];
     await this.userRepository.deleteAll();//limpiar base de datos
     for (const user of users) {
-      await this.userService.create(user);
+     usersInserts.push( await this.authService.register(user))
     }
+    return usersInserts;
   }
 }
