@@ -7,6 +7,8 @@ import { GetUser } from './decorators/get-user.decorator';
 import { User } from 'src/user/entities/user.entity';
 import { RawHeaders } from './decorators/raw-headers.decorator';
 import { UserRoleGuard } from './guards/user-role/user-role.guard';
+import { RoleProtected } from './decorators/role-protected.decorator';
+import { ValidRoles } from './interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -36,7 +38,7 @@ export class AuthController {
     }
   }
   @Get('private2')
-  @SetMetadata('roles',['admin','super-user'])
+  @RoleProtected(ValidRoles.user)
   @UseGuards(AuthGuard(),UserRoleGuard)
   testingPrivateRoute2(
     @GetUser() user: User,
