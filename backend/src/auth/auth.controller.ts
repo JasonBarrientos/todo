@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -16,5 +17,12 @@ export class AuthController {
   @Post('register')
   registr(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
+  }
+  @Get('private')
+  @UseGuards(AuthGuard())
+  testingPrivateRoute(){
+    return {
+      mssage: 'ruta privada'
+    }
   }
 }
