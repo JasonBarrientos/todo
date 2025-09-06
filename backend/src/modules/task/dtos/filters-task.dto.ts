@@ -9,6 +9,7 @@ export class FilterTaskDto {
 
     @IsOptional()
     @IsBoolean()
+    @Type(()=>Boolean)
     is_done?: boolean;
 
     @IsOptional()

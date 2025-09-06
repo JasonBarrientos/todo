@@ -11,10 +11,10 @@ export class TaskController {
     return this.taskService.create(createTaskDto,userId);
   }
 
-  @Get()
-  findAll() {
-    return this.taskService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.taskService.findAll();
+  // }
 
   @Get(':id')
   filter( @Param('id')idUser: string,   @Query() filters: FilterTaskDto) {
@@ -22,12 +22,12 @@ export class TaskController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(+id, updateTaskDto);
+  update(@Param('id') taskId: string, @Body() updateTaskDto: UpdateTaskDto) {
+    return this.taskService.update(taskId, updateTaskDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.taskService.remove(+id);
+    return this.taskService.remove(id);
   }
 }
