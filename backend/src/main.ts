@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   app.useGlobalPipes( new ValidationPipe())
-  app.useGlobalFilters(new HttpErrorFilter())
+  // app.useGlobalFilters(new HttpErrorFilter())
 
   const config = new DocumentBuilder()
     .setTitle('ToDo')
