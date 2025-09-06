@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { faker } from "@faker-js/faker";
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { CreateUserDto } from 'src/modules/user/dto/create-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 import { Repository } from 'typeorm';
-import { AuthService } from 'src/auth/auth.service';
-import { CreateUserResponseDto } from 'src/user/dto/create-user-response.dto copy';
+import { AuthService } from 'src/modules/auth/auth.service';
+import { CreateUserResponseDto } from 'src/modules/user/dto/create-user-response.dto';
 
 
 @Injectable()

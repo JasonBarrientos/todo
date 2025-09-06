@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsDate, IsIn, IsInt, IsOptional, IsString, MinLength } from "class-validator";
-import { User } from "src/user/entities/user.entity";
+import { User } from "src/modules/user/entities/user.entity";
 
 export class CreateTaskDto {
         @ApiProperty()

@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsOptional, IsString, IsStrongPassword, MinLength } from "class-validator";
-import { Task } from "src/task/entities/task.entity";
+import { IsString, IsStrongPassword, MinLength } from "class-validator";
 
 
 export class CreateUserDto {

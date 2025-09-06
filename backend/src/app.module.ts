@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TaskModule } from './task/task.module';
-import { UserModule } from "./user/user.module";
+import { TaskModule } from './modules/task/task.module';
+import { UserModule } from "./modules/user/user.module";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { SeedModule } from './seed/seed.module';
-import { AuthModule } from './auth/auth.module';
+import { SeedModule } from './modules/seed/seed.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 
 @Module({

@@ -1,4 +1,4 @@
-import { Task } from "src/task/entities/task.entity";
+import { Task } from "src/modules/task/entities/task.entity";
 import { Column, CreateDateColumn, Entity, Index, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
