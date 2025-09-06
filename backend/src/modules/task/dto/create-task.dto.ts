@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsDate, IsIn, IsInt, IsOptional, IsString, MinLength } from "class-validator";
-import { User } from "src/modules/user/entities/user.entity";
+import { IsDate, IsIn, IsInt, IsOptional, IsString, MinLength } from "class-validator";
 
 export class CreateTaskDto {
         @ApiProperty()
@@ -16,10 +15,11 @@ export class CreateTaskDto {
         @ApiProperty()
         @IsInt()
         @IsIn([1,2,3])
-        priority:string;
+        priority:number;
 
         @ApiProperty()
         @IsOptional()
         @IsDate()
         due_date? : Date
+
 }
